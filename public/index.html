@@ -98,10 +98,50 @@
         .muted {
             color: var(--muted);
         }
+
+        .language-switch {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-start;
+            margin-bottom: 18px;
+        }
+
+        .language-switch button {
+            appearance: none;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+            padding: 8px 14px;
+        }
+
+        .language-switch button[aria-pressed="true"] {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .lang-content[hidden] {
+            display: none;
+        }
+
+        [dir="ltr"] ul {
+            padding-left: 22px;
+            padding-right: 0;
+        }
     </style>
 </head>
 <body>
 <main>
+    <nav class="language-switch" aria-label="Language">
+        <button type="button" data-set-language="ar" aria-pressed="true">العربية</button>
+        <button type="button" data-set-language="en" aria-pressed="false">English</button>
+    </nav>
+
+    <div class="lang-content" data-language="ar">
     <header>
         <h1>سياسة الخصوصية</h1>
         <p>تطبيق التقويم الشامل</p>
@@ -190,6 +230,122 @@
         </p>
         <p class="muted">اسم التطبيق: التقويم الشامل</p>
     </section>
+    </div>
+
+    <div class="lang-content" data-language="en" lang="en" dir="ltr" hidden>
+    <header>
+        <h1>Privacy Policy</h1>
+        <p>Al-Taqweem Al-Shamil App</p>
+        <p class="updated">Last updated: September 18, 2026</p>
+    </header>
+
+    <section class="card summary">
+        <p>
+            <strong>Al-Taqweem Al-Shamil</strong> is committed to protecting your privacy and explaining how data is handled.
+            We do not use advertising, track users, or sell user data. Permissions are used only to provide features you choose to enable.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Data and Permissions</h2>
+
+        <h3>Location</h3>
+        <p>
+            The app requests location permission while in use only when you choose to calculate prayer times or Qibla direction based on your current location.
+            You may decline permission and select a city manually.
+        </p>
+        <ul>
+            <li>We do not sell location data.</li>
+            <li>We do not use location for tracking or advertising.</li>
+            <li>Your city or location data may be stored on your device to improve prayer time accuracy and support app features.</li>
+        </ul>
+
+        <h3>Notifications</h3>
+        <p>
+            Notifications, when enabled, are used to alert you about prayer times or reminders you choose inside the app.
+            You can disable them from the app settings or iOS settings.
+        </p>
+
+        <h3>App Preferences</h3>
+        <p>
+            The app may store preferences on your device, such as city, prayer calculation method, appearance, and notification options,
+            so core features and widgets work properly. These preferences are not used for tracking or advertising.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Internet Connection</h2>
+        <p>
+            The app may connect to the internet to display public information from official or public sources, such as events and dates.
+            We do not use these requests to collect personally identifying information or create a user profile.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>In-App Purchases</h2>
+        <p>
+            In-app purchases are processed through the Apple App Store. The app and developer do not receive payment card or banking details.
+            Purchases are subject to Apple's terms and privacy policy.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>What We Do Not Use</h2>
+        <ul>
+            <li>No advertising is used in the app.</li>
+            <li>No tracking across apps or websites is used.</li>
+            <li>We do not request access to photos, camera, or contacts.</li>
+            <li>We do not sell or rent user data to third parties.</li>
+        </ul>
+    </section>
+
+    <section class="card">
+        <h2>Children</h2>
+        <p>
+            The app is intended for general use and does not require account creation. We do not knowingly collect personal information from children.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Policy Updates</h2>
+        <p>
+            We may update this Privacy Policy when new features are added or when data practices change. The latest version will be published on this page.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>Contact</h2>
+        <p>
+            For privacy-related questions, contact:
+            <a href="mailto:akhubrani1@outlook.com">akhubrani1@outlook.com</a>
+        </p>
+        <p class="muted">App name: Al-Taqweem Al-Shamil</p>
+    </section>
+    </div>
 </main>
+<script>
+    const pageTitles = {
+        ar: "سياسة الخصوصية - التقويم الشامل",
+        en: "Privacy Policy - Al-Taqweem Al-Shamil"
+    };
+
+    function setLanguage(language) {
+        document.documentElement.lang = language;
+        document.documentElement.dir = language === "ar" ? "rtl" : "ltr";
+        document.title = pageTitles[language];
+
+        document.querySelectorAll("[data-language]").forEach((section) => {
+            section.hidden = section.dataset.language !== language;
+        });
+
+        document.querySelectorAll("[data-set-language]").forEach((button) => {
+            button.setAttribute("aria-pressed", String(button.dataset.setLanguage === language));
+        });
+    }
+
+    document.querySelectorAll("[data-set-language]").forEach((button) => {
+        button.addEventListener("click", () => setLanguage(button.dataset.setLanguage));
+    });
+</script>
 </body>
 </html>
